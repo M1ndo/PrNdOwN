@@ -2,7 +2,7 @@
 
 [PrNdOwN](https://github.com/m1ndo/PrNdOwN) Is a Tool To Download Ultra HD Videos From PornHub (Made Just For Fun)
 
-## Requirments Installation :heavy_check_mark: ##
+## Requirements Installation :heavy_check_mark: ##
 ```
            Linux
 sudo apt install phantomjs
