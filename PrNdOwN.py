@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Created By Benelhaj_younes(Do0pH2ck)
+# Created By r2dr0dn
 ## Hd Video Downloader For PornHub Videos
 ## Don't Copy The Code Without Giving The Credits Nerd
 
@@ -62,7 +62,7 @@ def banner():
     print("              "+colors8+"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
     print("              "+colors+"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
     print("              "+colors+"                   "+colors2+"["+colors4+"Cryptz"+colors6+"]"+colors7+"         ")
-    print("     "+colors3+"                      "+colors8+"["+colors3+"Created By Do0pH2ck"+colors5+"]"+colors4+"    "+Reset+"\n")
+    print("     "+colors3+"                      "+colors8+"["+colors3+"Created By r2dr0dn"+colors5+"]"+colors4+"    "+Reset+"\n")
 
 def net(url):
     """
