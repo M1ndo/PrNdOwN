@@ -28,8 +28,8 @@ pip3 install -r requirements.txt
 ## IMPORTANT :heavy_exclamation_mark: ## 
 __Run Only On Your Own Computer You Don't Want To Get In Trouble__
 
-## Author :innocent: ##
-__ybenel__
+## Author :ybenel: ##
+
 
 ## LICENSE :page_with_curl: ##
 [MIT License]
