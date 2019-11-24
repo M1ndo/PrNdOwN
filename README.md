@@ -1,6 +1,6 @@
 # PrNdOwN
 
-[PrNdOwN](https://github.com/doophack/PrNdOwN) Is a Tool To Download Ultra HD Videos From PornHub (Made Just For Fun)
+[PrNdOwN](https://github.com/r2dr0dn/PrNdOwN) Is a Tool To Download Ultra HD Videos From PornHub (Made Just For Fun)
 
 ## Requirements Installation :heavy_check_mark: ##
 ```
@@ -28,8 +28,8 @@ pip3 install -r requirements.txt
 ## IMPORTANT :heavy_exclamation_mark: ## 
 __Run Only On Your Own Computer You Don't Want To Get In Trouble__
 
-## Author :innocent: ##
-__benelhaj_younes(Do0pH2ck)__
+## Author :__r2dr0dn__: ##
+
 
 ## LICENSE :page_with_curl: ##
 [MIT License]
