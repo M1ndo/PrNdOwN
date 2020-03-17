@@ -26,6 +26,7 @@ pip3 install -r requirements.txt
 - Having Fun :star:
 
 ## IMPORTANT :heavy_exclamation_mark: ## 
+__Dowloading In 1080p Requires Premium Access__
 __Run Only On Your Own Computer You Don't Want To Get In Trouble__
 
 ## Author :ybenel: ##
