@@ -1,6 +1,6 @@
 # PrNdOwN
 
-[PrNdOwN](https://github.com/r2dr0dn/PrNdOwN) Is a Tool To Download Ultra HD Videos From PornHub (Made Just For Fun)
+[PrNdOwN](https://github.com/r2dr0dn/PrNdOwN) Is a Tool To Download Ultra HD Videos From Multi Video Sharing Websites  (Made Just For Fun)
 
 ## Requirements Installation :heavy_check_mark: ##
 ```
