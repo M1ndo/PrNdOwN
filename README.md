@@ -15,19 +15,20 @@ pip3 install -r requirements.txt
 ``` 
 
 ## Running :pencil:  ##
-``` python3 PrNdOwN.py ```
+``` python3 main.py ```
 
 ## Features ##
-- Ultra HD Quality (1080,60FPS)
-- CUSTOM SETTINS (Change Your Prefered Quality In PrNdOwN.py)
+- Multi Video Platform Downloader
+- Download From Youtube-Pornhub-XNXX etc.
+- Ultra HD Quality 
+- CUSTOM SETTINS (Change Your Prefered Quality In config src/download.py)
 - Ultra Fast Downloading Speed
-- Supports Proxy (You Might Get Slow Speed Dowload)
-- Download Multiple Choices (Playlist,audio Playlist, No Playlist...)
+- Supports Proxy Through SOCKS (You Might Get Slow Speed While Downloading)
+- Download Multiple Choices (Playlist,audio Playlist, Video, No Playlist...)
 - Having Fun :star:
 
 ## IMPORTANT :heavy_exclamation_mark: ## 
-__Dowloading In 1080p Requires Premium Access__
-__Run Only On Your Own Computer You Don't Want To Get In Trouble__
+__Dowloading In 1080p In Some Sites Like Pornhub Requires Premium Access Add Your account Credentials In config inside of src/download.py__
 
 ## Author :__r2dr0dn__: ##
 
