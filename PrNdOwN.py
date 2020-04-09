@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Created By ybenel
+# Created By m1ndo
 # Hd Video Downloader For PornHub
 # Don't Copy The Code Without Giving The Credits Nerd
 
