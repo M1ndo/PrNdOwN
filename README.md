@@ -33,7 +33,7 @@ pip install -r requirements.txt
 - Having Fun :star:
 
 
-## Author: benel
+## Author: ybenel
 
 
 ## LICENSE :page_with_curl: ##
