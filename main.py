@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Updated In 00/04/2020
-# Created By Ybenel
+# Created By ybenel
 import sys
 sys.path.insert(1, 'src')
 from src.downloader import download

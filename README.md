@@ -13,24 +13,27 @@ pip3 install -r requirements.txt
 sudo brew install phantomjs
 pip3 install -r requirements.txt
 ``` 
+```
+           Windows 
+requires python 3.3.5+ and ffmpeg installed and accessible from CMD
+pip install -r requirements.txt
+``` 
 
 ## Running :pencil:  ##
 ``` python3 main.py ```
 
 ## Features ##
 - Multi Video Platform Downloader
-- Download From Youtube-Pornhub-XNXX etc.
-- Ultra HD Quality 
+- Download From Pornhub-XNXX-Youtube etc.
+- HD Quality (depends on video(s) resolution)
 - CUSTOM SETTINS (Change Your Prefered Quality In config src/download.py)
-- Ultra Fast Downloading Speed
+- Fast Downloading Speed
 - Supports Proxy Through SOCKS (You Might Get Slow Speed While Downloading)
 - Download Multiple Choices (Playlist,audio Playlist, Video, No Playlist...)
 - Having Fun :star:
 
-## IMPORTANT :heavy_exclamation_mark: ## 
-__Dowloading In 1080p In Some Sites Like Pornhub Requires Premium Access Add Your account Credentials In config inside of src/download.py__
 
-## Author :ybenel: ##
+## Author: benel
 
 
 ## LICENSE :page_with_curl: ##
