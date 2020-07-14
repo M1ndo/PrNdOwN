@@ -4,7 +4,13 @@
 
 ## Requirements Installation :heavy_check_mark: ##
 ```
-           Linux
+           Linux  
+           
+       Arch Linux (AUR)
+sudo yay -S phantomjs
+pip3 install -r requirements.txt
+
+       Debian/Ubuntu
 sudo apt install phantomjs
 pip3 install -r requirements.txt
 ```
