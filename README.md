@@ -2,7 +2,7 @@
 
 [PrNdOwN](https://github.com/m1ndo/PrNdOwN) Is a Tool To Download Ultra HD Videos From Multi Video Sharing Websites  (Made Just For Fun)
 
-## Requirements Installation :heavy_check_mark: ##
+## Installation Requirements :heavy_check_mark: ##
 ```
            Linux  
            
