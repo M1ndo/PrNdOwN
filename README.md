@@ -7,8 +7,8 @@
            Linux  
            
        Arch Linux (AUR)
-sudo yay -S phantomjs
-pip3 install -r requirements.txt
+yay -S phantomjs
+pip install -r requirements.txt
 
        Debian/Ubuntu
 sudo apt install phantomjs
@@ -30,14 +30,18 @@ pip install -r requirements.txt
 
 ## Features ##
 - Multi Video Platform Downloader
-- Download From Pornhub-XNXX-Youtube etc.
+- Download From Youtube - Soundcloud - Twitter - PH - Erotic Sites etc.
 - HD Quality (depends on video(s) resolution)
-- CUSTOM SETTINS (Change Your Prefered Quality In config src/download.py)
-- Fast Downloading Speed
-- Supports Proxy Through SOCKS (You Might Get Slow Speed While Downloading)
+- Multiple Qualities (4k - 1080p - 720p - 480p .. etc)
+- Fast Downloading Speed (Again Depends On Your Bandwidth Speed)
+- Supports Proxy Through SOCKS/Http (You Might Get Slow Speed While Downloading)
 - Download Multiple Choices (Playlist,audio Playlist, Video, No Playlist...)
 - Having Fun :star:
-
+## Upcoming Feature ( PrNdOwN - 9x1)
+- A Custom Configuration File 
+- Setup Your Prevered Quality And Download Location With Some Other Options For Fast And Easy Download
+- No More Option Selection And Waste Of Time ( This is optional , you can still get selection options if u want to)
+- Command Line Arguments Support
 
 ## Author: ybenel
 
