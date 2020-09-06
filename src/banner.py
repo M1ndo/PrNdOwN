@@ -1,10 +1,16 @@
+#!/usr/bin/python3
 # Created By Ybenel(r2dr0dn)
+# Updated In 09/04/2020
 from colors import get_colors
 from random import shuffle
 import threading
 import os,sys
 from time import sleep as sl
 sys.path.insert(1,'ascii')
+
+# Global Variables
+platform = sys.platform
+
 def clear():
     if sys.platform == 'win32':
         os.system('cls')
@@ -30,15 +36,15 @@ shuffle(list_choice)
 for i in list_choice:
     sentence = i
 def banner2():
-    print(get_colors.white()+get_colors.randomize()+f"""    
+    print(get_colors.white()+get_colors.randomize()+f"""
       /\_/\ \
 
  /\  / o o \ \
-            
+
 //\\\ \~(*)~/
 `  \/   ^ /
    | \|| ||  {sentence}!
-   \ '|| ||  
+   \ '|| ||
     \)()-())
 """ + get_colors.white())
 path = os.getcwd()
@@ -46,18 +52,26 @@ def banner3():
     files = ['cat1.txt','cat2.txt','cat3.txt','cat4.txt','cat5.txt','cat6.txt']
     frames = []
     for file in files:
-        with open(f'{path}\\src\\ascii\\{file}','r') as f:
-            frames.append(f.readlines())
+        if platform == "linux":
+            with open(f'{path}/src/ascii/{file}','r') as f:
+                frames.append(f.readlines())
+        else:
+            with open(f'{path}\\src\\ascii\\{file}','r') as f:
+                frames.append(f.readlines())
     for i in range(0,2):
         for frame in frames:
             print(get_colors.randomize() + "".join(frame) + "     " + get_colors.randomize1() + "I'm Spinning")
             sl(0.01)
             clear()
-    
+
 def buggy():
     ascii = []
-    with open(f'{path}\\src\\ascii\\buggy.txt','r') as s:
-       ascii.appen(s.readlines())
+    if platform == "linux":
+        with open(f'{path}/src/ascii/buggy.txt','r') as s:
+           ascii.append(s.readlines())
+    else:
+        with open(f'{path}\\src\\ascii\\buggy.txt','r') as s:
+           ascii.append(s.readlines())
     for asci in ascii:
         print(get_colors.white() + get_colors.randomize()+"".join(asci) + get_colors.white() + "        "+get_colors.randomize()+"Wow How Lucky You're This Only Happens 1 out of 100 (1%)")
 
@@ -67,7 +81,11 @@ def banner4():
     shuffle(files)
     file = files[0]
     ascii = []
-    with open(f'{path}\\src\\ascii\\{file}','r') as s:
-        ascii.append(s.readlines())
+    if platform == "linux":
+        with open(f'{path}/src/ascii/{file}','r') as f:
+            ascii.append(f.readlines())
+    else:
+        with open(f'{path}\\src\\ascii\\{file}','r') as f:
+            ascii.append(f.readlines())
     for asci in ascii:
         print(get_colors.white() + get_colors.randomize2() + "".join(asci) + get_colors.white() + "        " + get_colors.randomize3() + sentence)

@@ -1,0 +1,23 @@
+[DEFAULT]
+# Set Your Prevered Location Where All Your Downloads Will Be Redirected To
+# Examples: linux `/home/ybenel/Videos/Spring` , win32 `C:\Users\ybenel\Videos\Spring\`
+Prevered_location = /home/ybenel/Videos/Spring/
+
+# Set Your Prevered Video Quality 
+# Available Qualities [4k,2k,1080,720,480,360]
+# Note: 4k and 2k Supports Only Youtube And Pornhub Premium
+Video_quality = 720 
+
+# Set Your Prevered Audio Quality
+# 0 stands for best, 1 stands for worse
+Sound_quality = 0
+
+# Check This As True If You Want To Extract Audio From Videos
+# Available Options [True,False]
+Extract_audio = False 
+
+# Set This To True If You Don't Wanna See Any Information About Giving URL ( Title, Duration, Max Resolution,...)
+Quiet = False
+
+# Set This To True If You Wanna Download A Playlist Instead Of One File
+Playlist = False
