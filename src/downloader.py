@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Updated On 7/26/2020 (Latest Update 09/06/2020)
-# Created By ybenel Aka m1ndo 
+# Created By ybenel Aka m1ndo
 from __future__ import unicode_literals
 import os,sys,json,itertools,threading,banner,shutil,configparser,optparse
 from time import sleep as sl

@@ -25,6 +25,10 @@ requires python 3.3.5+ and ffmpeg installed and accessible from CMD
 pip install -r requirements.txt
 ```
 
+__Youtube Has Changed It's Thumbnail Format To WebP Which Caused Some Issues__
+__In Order To Test This Development Release Please Apply The Following Patch__
+[From Here](https://github.com/ytdl-org/youtube-dl/pull/25717/)
+
 ## Commands :pencil:  ##
 
 ```    Display Help
