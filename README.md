@@ -37,11 +37,11 @@ pip install -r requirements.txt
 - Supports Proxy Through SOCKS/Http (You Might Get Slow Speed While Downloading)
 - Download Multiple Choices (Playlist,audio Playlist, Video, No Playlist...)
 - Having Fun :star:
-## Upcoming Feature ( PrNdOwN - 9x1)
-- A Custom Configuration File 
-- Setup Your Prevered Quality And Download Location With Some Other Options For Fast And Easy Download
-- No More Option Selection And Waste Of Time ( This is optional , you can still get selection options if u want to)
-- Command Line Arguments Support
+
+## Version (PrNdOwN 9x1) Is Available
+## Notes: Version 9x1 Is A Development Release Not An Official , So Might face some bugs
+## Feel Free To Test It Out
+
 
 ## Author: ybenel
 
