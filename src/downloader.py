@@ -1,16 +1,19 @@
 #!/usr/bin/python3
 # Updated On 7/26/2020 (Latest Update 09/06/2020)
-# Created By ybenel Aka m1ndo 
+# Created By ybenel Aka m1ndo
 from __future__ import unicode_literals
 import os,sys,json,itertools,threading,banner,shutil,configparser,optparse
 from time import sleep as sl
 from random import shuffle,randint
 from colors import get_colors
-from distutils import util
+from distutils import util,spawn
 try:
     import validators as valid
     import youtube_dl as dl
     import requests as req
+    if spawn.find_executable('ffmpeg'):
+        pass
+    else: print("[!] 'ffmpeg' Is Required ! ");sys.exit(0)
 except ImportError:
     print("[!] Modules ['requests','youtube_dl','validators'] Are Not Installed ! ")
     print("[+] Install Them To Get This Tool To Work ")
@@ -20,6 +23,8 @@ platform = sys.platform
 user = os.environ.get('USER')
 default_conf = []
 directory = []
+playlist_link = []
+extension = []
 class formats_ph():
     # Pornhub / xnxx / etc
     def reso_1080(): download.list_of_reso.append('1080p')
@@ -99,12 +104,26 @@ class download():
         done = True
     # get the current directory
     def get_current_dir(filename,dir):
+        conv = filename.endswith(".webm")
+        exts = extension[0]
         if dir is None:
+            if conv:
+                filename = filename.split(".w")[0]+f".{exts}"
+                print()
+                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
+                print()
+                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
             print()
             print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
             print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + os.getcwd())
             print()
         else:
+            if conv:
+                filename = filename.split(".w")[0]+f".{exts}"
+                print()
+                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
+                print()
+                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
             print()
             print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
             print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + dir)
@@ -180,6 +199,8 @@ class download():
         except dl.utils.DownloadError:
             print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Selected Quality Was Not Found!")
             print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize3() + " Auto Selecting The Best Quality Available")
+            if download.com_reso[0] in ['1080p','720p','480p','360p','240p']:
+                download.list_of_reso[0] = download.com_reso[0]
             compare.compare_formats(download.com_reso[0],link)
             sl(2);download.reforce_check(link)
 
@@ -481,6 +502,22 @@ class download():
             except:
                 print("File not found ! Thus We Cannot Move it")
 
+    def playlist_checker(link):
+        url = link.split("&");lene = len(url)
+        if lene==3:
+            print("[+] This Playlist Type Is Not Supported")
+            print("[+] Going With Video ID {%s} In The Giving URL "%(url[0]).split("=")[1])
+            playlist_link.append(url[0])
+            sl(5)
+        elif lene==2:
+            print("[+] This Playlist Type Is Not Supported")
+            print("[+] Going With Video ID {%s} In The Giving URL "%(url[0]).split("=")[1])
+            playlist_link.append(url[0])
+            sl(5)
+        else:
+            return
+
+
     # Where To Save File
     def output_file(location,title):
         src = title+'.mp4'
@@ -508,10 +545,14 @@ class download():
             return
         if download.check_url("https://google.com") and download.check_connection(url):
             if quiet == False:
+                if audio_qual == None: audio_qual = randint(1,10)
+                if audio_qual >= 0 and video_qual == None and extract_audio == None:
+                    extract_audio = True
                 if extract_audio == False or extract_audio == None:
                     download.bncl()
                     download.url_recognition(url)
                     directory.append(output)
+                    extension.append("mp4")
                     title,duration,resolution = download.get_over(url)
                     download.com_reso.append(resolution)
                     download.print_metadata2(title,duration,resolution)
@@ -525,6 +566,13 @@ class download():
                         if output != None: download.output_file(output,title)
                     else: download.user_print(option=4)
                 else:
+                    download.playlist_checker(url)
+                    download.bncl()
+                    if playlist_link == []:
+                        pass
+                    else:
+                        url = playlist_link[0]
+                    extension.append("mp3")
                     title,duration,resolution = download.get_over(url)
                     download.print_metadata2(title,duration,resolution)
                     directory.append(output)
@@ -686,6 +734,7 @@ class config_reader():
                 extr = config['DEFAULT']['Extract_audio']
                 qta = config['DEFAULT']['Quiet']
                 Playlist = config['DEFAULT']['Playlist']
+                sound_qual = bool(util.strtobool(sound_qual))
                 extr = bool(util.strtobool(extr))
                 qta = bool(util.strtobool(qta))
                 Playlist = bool(util.strtobool(Playlist))
