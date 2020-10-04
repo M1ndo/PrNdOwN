@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Updated On 7/26/2020 (Latest Update 09/06/2020)
+# Updated On 10/04/2020
 # Created By ybenel Aka m1ndo
 from __future__ import unicode_literals
 import os,sys,json,itertools,threading,banner,shutil,configparser,optparse
@@ -112,7 +112,7 @@ class download():
                 print()
                 print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
                 print()
-                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
+                print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
             print()
             print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
             print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + os.getcwd())
@@ -123,7 +123,7 @@ class download():
                 print()
                 print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
                 print()
-                print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
+                print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
             print()
             print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
             print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + dir)
@@ -177,6 +177,8 @@ class download():
                 'quiet': True,
                 'outtmpl': "%(title)s.%(ext)s",
                 'noplaylist': True,
+                'no_warnings': True,
+                'ignoreerrors': True,
                 'progress_hooks': [download.hooker],
                 'postprocessors': [{
                     'key': 'FFmpegVideoConvertor',
@@ -196,9 +198,21 @@ class download():
         try:
             with dl.YoutubeDL(data) as ydl:
                 ydl.download([link])
+
+        except dl.utils.ExtractorError:
+            print("[!] Exception Occurred While Extracting File ...")
+            exit(1)
+        except dl.utils.UnsupportedError:
+            print("[!] URL Is Not Supported")
+            exit(1)
+        except dl.utils.GeoRestrictedError:
+            print("[!] Video/Audio Is Restricted In Ur Area\n[+] Consider Using [--bypass-geo]")
+            exit(1)
+        except dl.utils.UnavailableVideoError:
+            print("[!] Video/Audio You Requested Is Not Available")
         except dl.utils.DownloadError:
-            print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Selected Quality Was Not Found!")
-            print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize3() + " Auto Selecting The Best Quality Available")
+            print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " An Error Occurred While Trying Downloading")
+            print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize3() + " Trying Automatic Way To Fix The Error")
             if download.com_reso[0] in ['1080p','720p','480p','360p','240p']:
                 download.list_of_reso[0] = download.com_reso[0]
             compare.compare_formats(download.com_reso[0],link)
@@ -206,19 +220,21 @@ class download():
 
     # Scrape Link Info ['metadata','thumbnail','uploader'....]
     def get_info(link):
-        ydl2 = dl.YoutubeDL({'quiet':True})
-        with ydl2:
+        ydl2 = dl.YoutubeDL({'quiet':True,'no_warnings': True,'ignoreerrors': False})
+        try:
             result = ydl2.extract_info(link,download=False)
-            if 'entries' in result:
-                video = result['entries'][0]
-            else:
-                video = result
-            video_title = video['title']
-            max_reso = video['format_id']
-            if 'duration' in result:
-                video_size = result['duration']
-            else:
-                video_size=None
+        except dl.utils.DownloadError:
+            exit(1)
+        if 'entries' in result:
+            video = result['entries'][0]
+        else:
+            video = result
+        video_title = video['title']
+        max_reso = video['format_id']
+        if 'duration' in result:
+            video_size = result['duration']
+        else:
+            video_size=None
             # video_url = video['url']
         return video_title,video_size,max_reso
 
@@ -424,7 +440,8 @@ class download():
 
     # Command Arguments
     def command_line():
-        parser = optparse.OptionParser()
+        usage = "Usage: PrNdOwN [options] url"
+        parser = optparse.OptionParser(usage)
         parser.add_option('-c','--cmd', dest="cmd", action="store_true",default=False,help="Use The Traditional Look")
         parser.add_option('-u','--url', dest="url",type="string",help="Video / Audio Url")
         parser.add_option('-r','--config',dest='conf',action="store_true",default=False,help="Read And Use The Config File")
@@ -435,11 +452,46 @@ class download():
         parser.add_option('-p','--playlist',dest='playlist',action="store_true",help='Download A Playlist With Specified URL')
         parser.add_option('-f','--file',dest='file',type='string',help='Read a file contains a list of urls then download them all')
         parser.add_option('-o','--output',dest='output',type='string',help='Output File Location')
+        parser.add_option('-s','--aria2c',dest='speed',action='store_true',default=False,help='Use External Downlaod (Aria2c)')
+        parser.add_option('-t','--external',dest='external',type='string',help='Use Prevered External Downloader (wget,curl,ffmpeg ...)')
+        parser.add_option('--external-args',dest='external_args',type='string',help='Set Prevered External Download Args')
+        parser.add_option('-b','--config-file',dest='config_file',type='string',help='Use Config file of Your Choice')
         (options,args) = parser.parse_args()
-        return options,parser
+        return options,args
 
+    # Check Aria2c
+    def aria2c_usage(extr,extr_args,usage=False):
+        config = download.get_config()
+        if usage:
+            if spawn.find_executable('aria2c'):
+                config['Video']['external_downloader'] = 'aria2c'
+                config['Video']['external_downloader_args'] = ['-x16','-k1M']
+                config['Audio']['external_downloader'] = 'aria2c'
+                config['Audio']['external_downloader_args'] = ['-x16','-k1M']
+            else: print("[!] 'aria2c' Was Not Found ! ");sys.exit(0)
+        elif extr != None:
+            config['Video']['external_downloader'] = extr
+            config['Audio']['external_downloader'] = extr
+            if extr_args is None:
+                extr_args = ['']
+            else:
+                extr_args = list(extr_args.split(" "))
+            config['Audio']['external_downloader_args'] = extr_args
+            config['Video']['external_downloader_args'] = extr_args
+        else:
+            return
 
-    # More And More And More If Statements FUCK
+    # Use HLS Format
+    def hls_video(quality):
+        available_format = download.com_reso[0]
+        if "hls" in available_format:
+            if quality in ['1080','720','480','360']:
+                hls_qual = f"hls-{quality}p"
+            else:
+                hls_qual = "hls-1080p"
+        else:
+            return quality
+        return hls_qual
 
     # Download Options
     def com_options(reso,link):
@@ -539,15 +591,16 @@ class download():
             print("[!] Directory Not Found")
 
 
-    def get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet):
+    def get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args):
         if not valid.url(url):
             download.user_print(option=1)
             return
+        download.aria2c_usage(external,external_args,aria2c)
         if download.check_url("https://google.com") and download.check_connection(url):
             if quiet == False:
                 if audio_qual == None: audio_qual = randint(1,10)
                 if audio_qual >= 0 and video_qual == None and extract_audio == None:
-                    extract_audio = True
+                    video_qual = '1080'
                 if extract_audio == False or extract_audio == None:
                     download.bncl()
                     download.url_recognition(url)
@@ -557,11 +610,11 @@ class download():
                     download.com_reso.append(resolution)
                     download.print_metadata2(title,duration,resolution)
                     sl(5)
-                    if video_qual == None:
-                        video_qual = '1080'
-                    if video_qual in ['4k','2k','1080','720','480','360']:
-                        if playlist == True:
-                            config['Video']['noplaylist'] = False
+                    video_qual = download.hls_video(video_qual)
+                    if video_qual in ['hls-1080p','hls-720p','hls-480p','hls-360p']:
+                        download.list_of_reso.append(video_qual)
+                        download.reforce_check(url)
+                    elif video_qual in ['4k','2k','1080','720','480','360']:
                         download.com_options(video_qual,url)
                         if output != None: download.output_file(output,title)
                     else: download.user_print(option=4)
@@ -609,15 +662,20 @@ class download():
                         download.audio_quality_list.extend(['bestaudio/best','320'])
                         download.audio_man(url,choice=1)
             else:
+                if audio_qual == None: audio_qual = randint(1,10)
+                if audio_qual >= 0 and video_qual == None and extract_audio == None:
+                    video_qual = '1080'
                 if extract_audio == False or extract_audio == None:
                     download.url_recognition(url)
                     directory.append(output)
                     title,duration,resolution = download.get_over(url)
                     download.com_reso.append(resolution)
                     sl(5)
-                    if video_qual == None:
-                        video_qual = '1080'
-                    if video_qual in ['4k','2k','1080','720','480','360']:
+                    video_qual = download.hls_video(video_qual)
+                    if video_qual in ['hls-1080p','hls-720p','hls-480p','hls-360p']:
+                        download.list_of_reso.append(video_qual)
+                        download.reforce_check(url)
+                    elif video_qual in ['4k','2k','1080','720','480','360']:
                         if playlist == True:
                             config['Video']['noplaylist'] = False
                         download.com_options(video_qual,url)
@@ -660,7 +718,7 @@ class download():
                         download.audio_man(url,choice=1)
 
     # Probably The all
-    def kick_it(file,output,audio_qual,video_qual,url=None,quiet=False,extract_audio=False,playlist=False):
+    def kick_it(file,output,audio_qual,video_qual,external,external_args,url=None,quiet=False,extract_audio=False,playlist=False,aria2c=False):
         if url==None and file==None:
             print("[!] Cannot Procced if there's no URL Or File list")
             exit(1)
@@ -675,57 +733,77 @@ class download():
                             if leng > times:
                                 url = url[times].strip()
                                 times += 1
-                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet)
+                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args)
                             else:
                                 break
             else:
-                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet)
+                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args)
 
 
     # The Holy Engine
     def runner():
-        options, parser = download.command_line()
+        options, args = download.command_line()
+        url = options.url
+        file = options.file
+        if url == None:
+            try:url = args[0]
+            except: pass
         if options.conf:
-            config_reader.find_config()
-            url = options.url
-            file = options.file
+            config_reader.find_config(filename='config.rc')
             output = default_conf[0]
             audio_quality = default_conf[3]
             video_quality = default_conf[1]
             quiet = default_conf[5]
             playlist = default_conf[6]
             extract_audio = default_conf[4]
+            aria2c = default_conf[7]
+            external = default_conf[8]
+            external_args = default_conf[9]
+        elif options.config_file != None:
+            config_reader.find_config(options.config_file)
+            output = default_conf[0]
+            audio_quality = default_conf[3]
+            video_quality = default_conf[1]
+            quiet = default_conf[5]
+            playlist = default_conf[6]
+            extract_audio = default_conf[4]
+            aria2c = default_conf[7]
+            external = default_conf[8]
+            external_args = default_conf[9]
         else:
-            url = options.url
-            file = options.file
             output = options.output
             audio_quality = options.audio_qual
             video_quality = options.video_qual
             quiet = options.verbose
             playlist = options.playlist
             extract_audio = options.extract
+            aria2c = options.speed
+            external = options.external
+            external_args = options.external_args
         if options.cmd:
             download.run()
-        download.kick_it(file,output,audio_quality,video_quality,url,quiet,extract_audio,playlist)
+        download.kick_it(file,output,audio_quality,video_quality,external,external_args,url,quiet,extract_audio,playlist,aria2c)
 
 
 
 class config_reader():
-    def find_config():
-        if platform in ['win64','win32'] and os.path.isfile('config.rc') == True:
-            config_reader.read_config(1)
+    def find_config(filename='config.rc'):
+        if platform in ['win64','win32'] and os.path.isfile(filename) == True:
+            config_reader.read_config(filename,1)
         elif platform == 'linux':
-            if os.path.isfile('config.rc') == True:
-                config_reader.read_config(1)
-            elif os.path.isfile('/home/%s/.config/PrNdOwN/config.rc'%(user)) == True:
-                config_reader.read_config(2)
-        else:  return
+            if os.path.isfile(filename) == True:
+                config_reader.read_config(filename,1)
+            elif os.path.isfile('/home/%s/.config/PrNdOwN/%s'%(user,filename)) == True:
+                config_reader.read_config(filename,2)
+            else:
+                print("[!] Config Not Found !");exit(1)
+        else: return
 
-    def read_config(option=1):
+    def read_config(filename,option=1):
         if option==1:
             try:
                 config = configparser.ConfigParser()
-                config.read('config.rc')
+                config.read(filename)
                 prev_loc = config['DEFAULT']['Prevered_location']
                 vid_qual = config['DEFAULT']['Video_quality']
                 # vid_qual2 = config['DEFAULT']['Second_video_quality']
@@ -734,16 +812,20 @@ class config_reader():
                 extr = config['DEFAULT']['Extract_audio']
                 qta = config['DEFAULT']['Quiet']
                 Playlist = config['DEFAULT']['Playlist']
+                aria2c = config['DEFAULT']['Aria2c']
+                external = config['DEFAULT']['External']
+                external_args = config['DEFAULT']['External_args']
                 sound_qual = bool(util.strtobool(sound_qual))
                 extr = bool(util.strtobool(extr))
                 qta = bool(util.strtobool(qta))
                 Playlist = bool(util.strtobool(Playlist))
-                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist])
+                aria2c = bool(util.strtobool(aria2c))
+                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args])
             except KeyError: return
         else:
             try:
                 config = configparser.ConfigParser()
-                config.read('/home/%s/.config/PrNdOwN/config.rc'%(user))
+                config.read('/home/%s/.config/PrNdOwN/%s'%(user,filename))
                 prev_loc = config['DEFAULT']['Prevered_location']
                 vid_qual = config['DEFAULT']['Video_quality']
                 vid_qual2 = vid_qual
@@ -751,8 +833,12 @@ class config_reader():
                 extr = config['DEFAULT']['Extract_audio']
                 qta = config['DEFAULT']['Quiet']
                 Playlist = config['DEFAULT']['Playlist']
+                aria2c = config['DEFAULT']['Aria2c']
+                external = config['DEFAULT']['External']
+                external_args = config['DEFAULT']['External_args']
                 extr = bool(util.strtobool(extr))
                 qta = bool(util.strtobool(qta))
                 Playlist = bool(util.strtobool(Playlist))
-                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist])
+                aria2c = bool(util.strtobool(aria2c))
+                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args])
             except KeyError: return
