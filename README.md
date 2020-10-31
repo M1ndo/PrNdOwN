@@ -66,8 +66,6 @@ In Linux You Can Set Your Config File Either In '~/.config/PrNdOwN' Or Inside Of
 In Windows Config File Can Only Be Available In PrNdOwN Itself
 ```
 
-**This Is A Development Branch It's Not Official , You Might Face Some Bugs (Please Report Any Issue That Has Been Faced In PrNdOwN)**
-
 **If You Have Ideas To Improve PrNdOwN, Then Fork This Repository And Push A Pull Request**
 
 ## Features ##
