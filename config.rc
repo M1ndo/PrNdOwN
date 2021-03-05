@@ -4,9 +4,9 @@
 Prevered_location = /home/ybenel/Videos/Spring/
 
 # Set Your Prevered Video Quality 
-# Available Qualities [4k,2k,1080,720,480,360]
+# Available Qualities [4k,2k,1080p,720p,480p,360p]
 # Note: 4k and 2k Supports Only Youtube And Pornhub Premium
-Video_quality = 720 
+Video_quality = 720p 
 
 # Set Your Prevered Audio Quality
 # 0 stands for best, 1 stands for worse
@@ -21,3 +21,9 @@ Quiet = False
 
 # Set This To True If You Wanna Download A Playlist Instead Of One File
 Playlist = False
+
+# External Download (Optional) [curl,wget,aria2c ..etc]
+External = aria2c
+
+# External Downloader Arguments
+External_args = ['-x16','-k1M']
