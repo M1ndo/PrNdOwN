@@ -24,7 +24,8 @@ pip3 install -r requirements.txt
 requires python 3.3.5+ and ffmpeg installed and accessible from CMD
 pip install -r requirements.txt
 ```
-
+# Optional Requirements
+- For Fast Download Speeds Please Install (Aria2 Or Curl Or Wget ...)
 
 ## Commands :pencil:  ##
 
@@ -60,11 +61,10 @@ python main.py -v 1080 -t wget --external-args "-S --user-agent='PrNdOwN/9.1.1'"
 ```
 
 ## Important Notes ##
-```Use The Help Menu To See All Available Command Line option 
-Read The Config File To Customize All Your Options
-In Linux You Can Set Your Config File Either In '~/.config/PrNdOwN' Or Inside Of PrNdOwN itself
-In Windows Config File Can Only Be Available In PrNdOwN Itself
-```
+- Use The Help Menu To See All Available Command Line option 
+- Read The Config File To Customize All Your Options
+- In Linux You Can Set Your Config File Either In '~/.config/PrNdOwN' Or Inside Of PrNdOwN itself
+- In Windows Config File Can Only Be Available In PrNdOwN Itself
 
 **If You Have Ideas To Improve PrNdOwN, Then Fork This Repository And Push A Pull Request**
 
