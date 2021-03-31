@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Updated On 05/03/2021
+# Updated On 31/03/2021
 # Created By ybenel
 """
 Important Notes:
@@ -28,6 +28,7 @@ platform = sys.platform
 user = os.environ.get('USER')
 default_conf = []
 directory = []
+titlez = []
 playlist_link = []
 extension = []
 cf_path = ("/home/%s/.config/PrNdOwN/"%(user))
@@ -60,12 +61,17 @@ class config_reader():
                 aria2c = config['DEFAULT']['Aria2c']
                 external = config['DEFAULT']['External']
                 external_args = config['DEFAULT']['External_args']
+                proxy = config['DEFAULT']['Proxy']
+                geobypass = config['DEFAULT']['Geobypass']
+                vid_Aud = config['DEFAULT']['Formats'];vid_Aud = list(vid_Aud.split(" "))
+                Aud_bit = config['DEFAULT']['Audio_Bit']
                 sound_qual = bool(util.strtobool(sound_qual))
                 extr = bool(util.strtobool(extr))
                 qta = bool(util.strtobool(qta))
                 Playlist = bool(util.strtobool(Playlist))
                 aria2c = bool(util.strtobool(aria2c))
-                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args])
+                geoby = bool(util.strtobool(geobypass))
+                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args,proxy,vid_Aud,Aud_bit,geoby])
             except KeyError: return
 
 # Parser All Arguments To Config Then Download
@@ -107,6 +113,8 @@ class parser_args():
         if str(self.geobypass) != "None": config[self.type]['geo_bypass'] = self.geobypass
         print(config[self.type])
         download.download(self.link, config[self.type],incase_of_error)
+        download.output_file(directory[0],titlez[0])
+
 
 class download():
     # Some Global Variables And lists
@@ -171,10 +179,11 @@ class download():
                 print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
                 print()
                 print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
-            print()
-            print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
-            print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + os.getcwd())
-            print()
+            if os.path.isfile(filename):
+                print()
+                print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
+                print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + os.getcwd())
+                print()
         else:
             if conv:
                 filename = filename.split(".w")[0]+f".{exts}"
@@ -182,10 +191,11 @@ class download():
                 print("\n" + get_colors.randomize() + "["+get_colors.randomize2()+"!"+get_colors.randomize1()+"]" + get_colors.randomize2() + " Converting Sample From [webm] Format")
                 print()
                 print(get_colors.randomize() + "["+get_colors.randomize2()+"+"+get_colors.randomize1()+"]" + get_colors.randomize2() + " This Might Take Few Seconds/Minutes")
-            print()
-            print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
-            print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + dir)
-            print()
+            if os.path.isfile(filename):
+                print()
+                print('\n' + get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.randomize2() + " Video Saved Undername "+ get_colors.randomize3() + f"['{filename}']" + get_colors.white() + '\n')
+                print(get_colors.green() + '[' + get_colors.magento() + '+' + get_colors.green() + ']' + get_colors.white() + ' Folder ' + get_colors.randomize() + dir)
+                print()
     # Get Downloading Status
     def hooker(t):
         if t['status'] == 'downloading':
@@ -528,7 +538,7 @@ class download():
     def output_file(location,title):
         src = title+'.mp4'
         if os.path.isdir(location):
-            if platform == 'win32':
+            if platform in ['win64','win32']:
                 if location.endswith('\\'):
                     download.move_file(src,location)
                 else:
@@ -568,6 +578,7 @@ class download():
     def display_info(url):
         download.url_recognition(url)
         title,duration,resolution = download.get_over(url)
+        titlez.append(title)
         download.print_metadata2(title,duration,resolution)
         sl(3)
 
@@ -596,7 +607,6 @@ class download():
                     video_qual = download.hls_video(video_qual)
                     s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
                     s.add_values()
-                    if output != None: download.output_file(output,title)
                 else:
                     download.bncl()
                     download.display_info(url)
@@ -621,10 +631,10 @@ class download():
                     video_qual = download.hls_video(video_qual)
                     s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
                     s.add_values()
-                    if output != None: download.output_file(output,title)
                 else:
                     extension.append(aud_format)
                     directory.append(output)
+                    download.display_info(url)
                     if audio_qual == 0: q = 'bestaudio/best'
                     elif audio_qual == 1: q = 'worstaudio/worst'
                     else: q = 'bestaudio/best'
@@ -646,9 +656,9 @@ class download():
                             leng = len(url)
                             if leng > times:
                                 url = url[times].strip()
+                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass)
                                 times += 1
                             else:
-                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass)
                                 break
             else:
                 download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass)
@@ -669,7 +679,7 @@ class download():
             audio_quality = default_conf[3]
             video_quality = default_conf[1]
             vid_format,audio_format = default_conf[11]
-            aud_bitrate = default[12]
+            aud_bitrate = default_conf[12]
             quiet = default_conf[5]
             playlist = default_conf[6]
             extract_audio = default_conf[4]
@@ -678,6 +688,10 @@ class download():
             external_args = default_conf[9]
             proxy = default_conf[10]
             geobypass = default_conf[13]
+            username = options.username
+            password = options.password
+            vid_password = options.video_password
+            factor = options.factor_two
         else:
             output = options.output
             audio_quality = options.audio_qual
