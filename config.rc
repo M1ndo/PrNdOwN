@@ -1,4 +1,6 @@
 [DEFAULT]
+# Note: Leave Empty If you don't wanna specify any option(s)
+
 # Set Your Prevered Location Where All Your Downloads Will Be Redirected To
 # Examples: linux `/home/ybenel/Videos/Spring` , win32 `C:\Users\ybenel\Videos\Spring\`
 Prevered_location = /home/ybenel/Videos/Spring/
@@ -27,3 +29,16 @@ External = aria2c
 
 # External Downloader Arguments
 External_args = ['-x16','-k1M']
+
+# Proxy To Use Example (http://localhost:1337) 
+Proxy =
+
+# Bypass Geo Restrictions
+Geobypass = False
+
+# Video/Audio Formats To Use
+Formats = mp4 mp3
+
+# Audio Bitrate (Default 320 for mp3)
+Audio_Bit = 320
+
