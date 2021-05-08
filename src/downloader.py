@@ -111,7 +111,7 @@ class parser_args():
         if self.videopassword != '': config[self.type]['videopassword'] = self.videopassword
         if self.proxy != '': config[self.type]['proxy'] = self.proxy
         if str(self.geobypass) != "None": config[self.type]['geo_bypass'] = self.geobypass
-        print(config[self.type])
+        # print(config[self.type])
         download.download(self.link, config[self.type],incase_of_error)
         download.output_file(directory[0],titlez[0])
 
@@ -217,7 +217,7 @@ class download():
     def get_config():
         config = {
             'Audio': {
-                'quiet': False,
+                'quiet': True,
                 'outtmpl': "%(title)s.%(ext)s",
                 'writethumbnail': True,
                 'progress_hooks': [download.hooker],
@@ -229,11 +229,11 @@ class download():
                     {'key': 'FFmpegMetadata'},]
             },
             'Video': {
-                'quiet': False,
+                'quiet': True,
                 'outtmpl': "%(title)s.%(ext)s",
                 'noplaylist': True,
-                'no_warnings': False,
-                'ignoreerrors': False,
+                'no_warnings': True,
+                'ignoreerrors': True,
                 'progress_hooks': [download.hooker],
                 'postprocessors': [{
                     'key': 'FFmpegVideoConvertor',
@@ -519,8 +519,9 @@ class download():
             try:
                 src = src.split(".")[0] + '.mp3'
                 shutil.move(src,loc)
-            except:
+            except Exception as e:
                 print("File not found ! Thus We Cannot Move it")
+                print(e)
 
     def playlist_checker(link):
         url = link.split("&");lene = len(url)
@@ -536,21 +537,15 @@ class download():
 
     # Where To Save File
     def output_file(location,title):
-        src = title+'.mp4'
+        if platform in ['win64','win32']:
+            if location.endswith('\\'): pass
+            else: location = location+"\\"
+        if location.endswith('/'): pass
+        else: location = location+"/"
+        if extension[0] == None: extension.clear();extension.append('mp4')
+        src = title+"."+extension[0]
         if os.path.isdir(location):
-            if platform in ['win64','win32']:
-                if location.endswith('\\'):
-                    download.move_file(src,location)
-                else:
-                    location = location+"\\"
-                    download.move_file(src,location)
-            else:
-                if location.endswith('/'):
-                    download.move_file(src,location)
-                else:
-                    location = location + "/"
-                    download.move_file(src,location)
-
+            download.move_file(src,location)
         else:
             print("[!] Directory Not Found")
 
@@ -590,6 +585,8 @@ class download():
         download.playlist_checker(url)
         if playlist_link == []: pass
         else: url = playlist_link[0]
+        if output != None: directory.append(output)
+        else: directory.append(os.getcwd())
         if download.check_url("https://google.com") and download.check_connection(url):
             if quiet == False:
                 if audio_qual == None: audio_qual = randint(2,4)
@@ -597,7 +594,6 @@ class download():
                     video_qual = '1080p'
                 if extract_audio == False or extract_audio == None:
                     download.bncl()
-                    directory.append(output)
                     extension.append(vid_format)
                     download.display_info(url)
                     download.check_4k_2k(video_qual,username,password)
@@ -611,7 +607,6 @@ class download():
                     download.bncl()
                     download.display_info(url)
                     extension.append(aud_format)
-                    directory.append(output)
                     if audio_qual == 0: q = 'bestaudio/best'
                     elif audio_qual == 1: q = 'worstaudio/worst'
                     else: q = 'bestaudio/best'
@@ -622,7 +617,6 @@ class download():
                 if audio_qual >= 0 and video_qual == None and extract_audio == None:
                     video_qual = '1080p'
                 if extract_audio == False or extract_audio == None:
-                    directory.append(output)
                     download.display_info(url)
                     download.check_4k_2k(video_qual,username,password)
                     if video_qual in ['4k','2k','1080p','720p','480p','360p']: pass
@@ -633,7 +627,6 @@ class download():
                     s.add_values()
                 else:
                     extension.append(aud_format)
-                    directory.append(output)
                     download.display_info(url)
                     if audio_qual == 0: q = 'bestaudio/best'
                     elif audio_qual == 1: q = 'worstaudio/worst'
