@@ -30,7 +30,7 @@ pip install -r requirements.txt
 ## Commands :pencil:  ##
 
 ```    Display Help
-python3 main.py --help
+python main.py --help
 
        Download A Single Video in (1080p)
 python main.py -u <URL> or python main.py <URL>
@@ -77,13 +77,6 @@ python main.py -v 1080 -t wget --external-args "-S --user-agent='PrNdOwN/9.1.1'"
 - Supports Proxy Through SOCKS/Http (You Might Get Slow Speed While Downloading)
 - Download Multiple Choices (Playlist audio / video, single audio / video)
 - Having Fun :star:
-
-## Update ( PrNdOwN - 9x1)
-- A Custom Configuration File
-- Setup Your Prevered Quality And Download Location With Some Other Options For Fast And Easy Download
-- No More Option Selection And Waste Of Time ( This is optional , you can still get selection options if u want to)
-- Command Line Arguments Support
-- Many More Features
 
 ## Author: ybenel
 ## LICENSE :page_with_curl: ##

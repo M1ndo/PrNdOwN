@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Updated On 31/03/2021
+# Updated On 22/08/2021
 # Created By ybenel
 """
 Important Notes:
@@ -65,13 +65,14 @@ class config_reader():
                 geobypass = config['DEFAULT']['Geobypass']
                 vid_Aud = config['DEFAULT']['Formats'];vid_Aud = list(vid_Aud.split(" "))
                 Aud_bit = config['DEFAULT']['Audio_Bit']
+                thumbnail = config['DEFAULT']['Thumbnail']
                 sound_qual = bool(util.strtobool(sound_qual))
                 extr = bool(util.strtobool(extr))
                 qta = bool(util.strtobool(qta))
                 Playlist = bool(util.strtobool(Playlist))
                 aria2c = bool(util.strtobool(aria2c))
                 geoby = bool(util.strtobool(geobypass))
-                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args,proxy,vid_Aud,Aud_bit,geoby])
+                default_conf.extend([prev_loc,vid_qual,vid_qual2,sound_qual,extr,qta,Playlist,aria2c,external,external_args,proxy,vid_Aud,Aud_bit,geoby,thumbnail])
             except KeyError: return
 
 # Parser All Arguments To Config Then Download
@@ -92,6 +93,7 @@ class parser_args():
         self.videopassword = args[12] or ''
         self.proxy = args[13] or ''
         self.geobypass = args[14] or False
+        self.thumbnail = args[15] or False
 
     def add_values(self):
         config = download.get_config()
@@ -103,6 +105,7 @@ class parser_args():
                 break
         config[self.type]['preferedformat'] = self.video_format
         if self.playlist == "True": config[self.type]['noplaylist'] = False
+        if self.thumbnail == "False": config[self.type]['writethumbnail'] = False
         if str(self.external_downloader) != "None": config[self.type]['external_downloader'] = self.external_downloader
         if str(self.external_downloader_args) != "None": config[self.type]['external_downloader_args'] = self.external_downloader_args
         if self.username != '': config[self.type]['username'] = self.username
@@ -111,7 +114,6 @@ class parser_args():
         if self.videopassword != '': config[self.type]['videopassword'] = self.videopassword
         if self.proxy != '': config[self.type]['proxy'] = self.proxy
         if str(self.geobypass) != "None": config[self.type]['geo_bypass'] = self.geobypass
-        # print(config[self.type])
         download.download(self.link, config[self.type],incase_of_error)
         download.output_file(directory[0],titlez[0])
 
@@ -468,7 +470,8 @@ class download():
         group.add_option('-A','--audio-format',dest='audioformat',type='string',help='Audio Format To Use ex (mp3,flac..)')
         group.add_option('-b','--audio-bitrate',dest='aud_bitrate',type='string',help="Audio Bitrate Default (320kbit)")
         group.add_option('-x','--extract-audio',dest='extract',action='store_true',help='Extract Audio From a video source')
-        group.add_option('-p','--playlist',dest='playlist',action="store_true",help='Download A Playlist With Specified URL')
+        group.add_option('-l','--thumbnail',dest='thumbnail',action='store_true',help='EmbedThumbnail To Video/Audio')
+        group.add_option('-p','--playlist',dest='playlist',action="store_true",default=True,help='Download A Playlist With Specified URL')
         parser.add_option_group(group)
         group2 = optparse.OptionGroup(parser, "Authentication Options",
           "This Options Can Be Used To Set Authentication Method")
@@ -577,7 +580,7 @@ class download():
         download.print_metadata2(title,duration,resolution)
         sl(3)
 
-    def get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,vid_password,two_factor,proxy,vid_format,aud_format,geobypass):
+    def get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,vid_password,two_factor,proxy,vid_format,aud_format,geobypass,thumbnail):
         if not valid.url(url):
             download.user_print(option=1)
             return
@@ -601,7 +604,7 @@ class download():
                     else: download.user_print(option=4);exit(1)
                     video_qual = download.check_ph_hls(url,video_qual)
                     video_qual = download.hls_video(video_qual)
-                    s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
+                    s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass),thumbnail)
                     s.add_values()
                 else:
                     download.bncl()
@@ -610,7 +613,7 @@ class download():
                     if audio_qual == 0: q = 'bestaudio/best'
                     elif audio_qual == 1: q = 'worstaudio/worst'
                     else: q = 'bestaudio/best'
-                    s = parser_args("Audio",url,q,aud_format,None,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
+                    s = parser_args("Audio",url,q,aud_format,None,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass),thumbnail)
                     s.add_values()
             else:
                 if audio_qual == None: audio_qual = randint(2,4)
@@ -623,7 +626,7 @@ class download():
                     else: download.user_print(option=4);exit(1)
                     video_qual = download.check_ph_hls(url,video_qual)
                     video_qual = download.hls_video(video_qual)
-                    s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
+                    s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass),thumbnail)
                     s.add_values()
                 else:
                     extension.append(aud_format)
@@ -631,11 +634,11 @@ class download():
                     if audio_qual == 0: q = 'bestaudio/best'
                     elif audio_qual == 1: q = 'worstaudio/worst'
                     else: q = 'bestaudio/best'
-                    s = parser_args("Audio",url,q,aud_format,None,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass))
+                    s = parser_args("Audio",url,q,aud_format,None,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass),thumbnail)
                     s.add_values()
 
     # Probably The all
-    def kick_it(file,output,audio_qual,video_qual,aud_bitrate,external,external_args,username,password,video_password,two_factor,proxy,vid_format,aud_format,url=None,quiet=False,extract_audio=False,playlist=False,aria2c=False,geobypass=False):
+    def kick_it(file,output,audio_qual,video_qual,aud_bitrate,external,external_args,username,password,video_password,two_factor,proxy,vid_format,aud_format,url=None,quiet=False,extract_audio=False,playlist=False,aria2c=False,geobypass=False,thumbnail=True):
         if url==None and file==None:
             print("[!] Cannot Procced if there's no URL Or File list")
             exit(1)
@@ -649,12 +652,12 @@ class download():
                             leng = len(url)
                             if leng > times:
                                 url = url[times].strip()
-                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass)
+                                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass,thumbnail)
                                 times += 1
                             else:
                                 break
             else:
-                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass)
+                download.get_me_my_stuff(url,output,video_qual,audio_qual,playlist,extract_audio,quiet,aria2c,external,external_args,aud_bitrate,username,password,two_factor,video_password,proxy,vid_format,aud_format,geobypass,thumbnail)
 
 
     # The Holy Engine
@@ -681,6 +684,7 @@ class download():
             external_args = default_conf[9]
             proxy = default_conf[10]
             geobypass = default_conf[13]
+            thumbnail = default_conf[14]
             username = options.username
             password = options.password
             vid_password = options.video_password
@@ -704,6 +708,7 @@ class download():
             vid_format = options.videoformat
             audio_format = options.audioformat
             geobypass = options.geobypass
+            thumbnail = options.thumbnail
         if options.cmd:
             download.run()
-        download.kick_it(file,output,audio_quality,video_quality,aud_bitrate,external,external_args,username,password,vid_password,factor,proxy,vid_format,audio_format,url,quiet,extract_audio,playlist,aria2c,geobypass)
+        download.kick_it(file,output,audio_quality,video_quality,aud_bitrate,external,external_args,username,password,vid_password,factor,proxy,vid_format,audio_format,url,quiet,extract_audio,playlist,aria2c,geobypass,thumbnail)

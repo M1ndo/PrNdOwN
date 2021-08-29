@@ -42,3 +42,6 @@ Formats = mp4 mp3
 # Audio Bitrate (Default 320 for mp3)
 Audio_Bit = 320
 
+# Set Thumbnail To Be Embedded (Default True) \n Set False If You Don't Want Thumbnails. 
+Thumbnail = True
+
