@@ -7,10 +7,11 @@ External Downloader And its args do only work in specific video formats In platf
 Unfortunately It doesn't work on PH And Other Sites.
 """
 from __future__ import unicode_literals
-import os,sys,json,itertools,threading,banner,shutil,configparser,optparse
+from .banner import *
+import os,sys,json,itertools,threading,shutil,configparser,optparse
 from time import sleep as sl
 from random import shuffle,randint
-from colors import get_colors
+from .colors import get_colors
 from distutils import util,spawn
 try:
     import validators as valid
@@ -300,13 +301,13 @@ class download():
         nums = [1,2,3,4,5,6,7,8,9,10]
         shuffle(nums)
         if nums == 7:
-            x = threading.Thread(target=banner.banner3)
+            x = threading.Thread(target=banner3)
             x.start()
             download.clear()
-            banner.buggy()
+            buggy()
             print()
         else:
-            banner.banner4()
+            banner4()
             print()
 
     # URL recognition (Youtube,PH etc)
@@ -412,7 +413,7 @@ class download():
     # BannerAndClear
     def bncl():
         download.clear()
-        banner.banner()
+        banner()
 
     # The Holy Engine Of Look
     def run():

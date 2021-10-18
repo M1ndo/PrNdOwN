@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # Created By ybenel
 # Updated In 09/04/2020
-from colors import get_colors
+from .colors import get_colors
 from random import shuffle
 import threading
 import os,sys
