@@ -32,11 +32,9 @@ Build platform distribution::
              Linux  
 
          Arch Linux (AUR)
-  yay -S phantomjs
   pip install -r requirements.txt
 
          Debian/Ubuntu
-  sudo apt install phantomjs
   pip3 install -r requirements.txt
 #+end_example
 

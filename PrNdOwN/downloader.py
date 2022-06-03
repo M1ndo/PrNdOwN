@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-# Updated On 22/08/2021
+
+# Updated On 01/01/2022
 # Created By ybenel
 """
 Important Notes:
 External Downloader And its args do only work in specific video formats In platforms like (youtube)
 Unfortunately It doesn't work on PH And Other Sites.
+Edit: It Works Now :)
 """
 from __future__ import unicode_literals
 from .banner import *
@@ -15,15 +17,15 @@ from .colors import get_colors
 from distutils import util,spawn
 try:
     import validators as valid
-    import youtube_dl as dl
+    import yt_dlp as dl
     import requests as req
     if spawn.find_executable('ffmpeg'):
         pass
-    else: print("[!] 'ffmpeg' Is Required ! ");sys.exit(0)
+    else: print("[!] 'ffmpeg' Is Required ! ");sys.exit(1)
 except ImportError:
     print("[!] Modules ['requests','youtube_dl','validators'] Are Not Installed ! ")
     print("[+] Install Them To Get This Tool To Work ")
-    sys.exit(0)
+    sys.exit(1)
 # global
 platform = sys.platform
 user = os.environ.get('USER')
@@ -129,6 +131,15 @@ class download():
             os.system('cls')
         else:
             os.system('clear')
+    # Convert Size From Bytes To s?
+    def convert_size(size_bytes):
+        if size_bytes == 0:
+            return "0B"
+        size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+        i = int(math.floor(math.log(size_bytes, 1024)))
+        p = math.pow(1024, i)
+        s = round(size_bytes / p, 2)
+        return "%s %s" % (s, size_name[i])
     # Check if the link is alive
     def check_url(url):
         try:
@@ -283,18 +294,22 @@ class download():
             result = ydl2.extract_info(link,download=False)
         except dl.utils.DownloadError:
             exit(1)
+        a = []
         if 'entries' in result:
             video = result['entries'][0]
         else:
             video = result
         video_title = video['title']
-        max_reso = video['format_id']
+        try:
+            max_reso = video['format_note']
+        except:
+            max_reso = video['resolution']
         if 'duration' in result:
-            video_size = result['duration']
+            video_dir= result['duration']
         else:
-            video_size=None
+            video_dir=None
             # video_url = video['url']
-        return video_title,video_size,max_reso,result
+        return video_title,video_dir,max_reso,result
 
     # Let's see how lucky you are
     def buggy():
@@ -571,8 +586,12 @@ class download():
         if reso == "360p": s = "426x240"
         for item in r:
           if s in item['format']:
-              return item['format_id']
-
+              try:
+                filesize = item['filesize']
+              except:
+                filesize = item['filesize_approx']
+              return item['format_id'],filesize
+        return 'bestvideo+bestaudio',0
     # Save Few Lines Of Code
     def display_info(url):
         download.url_recognition(url)
@@ -603,8 +622,11 @@ class download():
                     download.check_4k_2k(video_qual,username,password)
                     if video_qual in ['4k','2k','1080p','720p','480p','360p']: pass
                     else: download.user_print(option=4);exit(1)
-                    video_qual = download.check_ph_hls(url,video_qual)
+                    video_qual,filesize = download.check_ph_hls(url,video_qual)
                     video_qual = download.hls_video(video_qual)
+                    if 'best' in video_qual: pass
+                    elif 'hls' not in video_qual:
+                        video_qual = video_qual + "+140"
                     s = parser_args("Video",url,video_qual,aud_format,vid_format,aud_bitrate,str(playlist),external,external_args,username,password,two_factor,vid_password,proxy,bool(geobypass),thumbnail)
                     s.add_values()
                 else:
